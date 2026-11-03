@@ -1,0 +1,71 @@
+:root{
+  --paper:#f3ece0; --ink:#1b1712; --muted:#6b6256; --line:#1b171233;
+  --accent:#c2410c; --a:#e7d6bd; --b:#2f3a2f; --c:#c2410c; --d:#d9c7a7;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#16130f; --ink:#f1e9dc; --muted:#a39886; --line:#f1e9dc2e;
+    --accent:#f97316; --a:#2b241b; --b:#3d4a3d; --c:#9a3412; --d:#3a3024; }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font:400 17px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:clamp(16px,4vw,48px)}
+.mono{font-family:"JetBrains Mono",monospace;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase}
+
+.masthead{display:flex;justify-content:space-between;align-items:center;padding-block:22px;border-bottom:1px solid var(--line)}
+.masthead nav{display:flex;gap:24px}
+.masthead nav a{font-family:"JetBrains Mono",monospace;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;text-decoration:none}
+.masthead nav a:hover{color:var(--accent)}
+
+.hero{padding-block:clamp(48px,10vw,120px) clamp(40px,6vw,80px)}
+.kicker{color:var(--muted);margin-bottom:12px}
+h1{font-family:Fraunces,serif;font-weight:800;font-size:clamp(4rem,17vw,15rem);line-height:.85;letter-spacing:-.045em;font-variation-settings:"opsz" 144}
+h1 em{font-style:italic;font-weight:300}
+.dot{color:var(--accent)}
+.hero-foot{display:flex;justify-content:space-between;align-items:end;gap:32px;margin-top:40px;flex-wrap:wrap}
+.lede{max-width:34ch;font-family:Fraunces,serif;font-size:clamp(1.25rem,2.4vw,1.6rem);line-height:1.35}
+.scroll{text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
+
+.rule{display:flex;justify-content:space-between;border-block:2px solid var(--ink);padding-block:10px}
+
+.work{display:grid;grid-template-columns:repeat(2,1fr);gap:0}
+.project{display:grid;grid-template-rows:auto auto 1fr;padding:36px 0;border-bottom:1px solid var(--line)}
+.project:nth-child(even){padding-left:36px;border-left:1px solid var(--line)}
+.project:nth-child(odd):not(.feature){padding-right:36px}
+.feature{grid-column:1/-1;grid-template-columns:1.3fr 1fr;grid-template-rows:auto 1fr;column-gap:48px}
+.feature .num{grid-column:1/-1}
+.num{font-family:Fraunces,serif;font-style:italic;font-size:1rem;color:var(--muted);margin-bottom:12px}
+.art{aspect-ratio:4/3;display:grid;place-items:center;overflow:hidden;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.art span{font-family:Fraunces,serif;font-weight:900;font-size:clamp(3rem,8vw,7rem);letter-spacing:-.04em}
+.art-a{background:var(--a)} .art-a span{font-style:italic;color:var(--accent)}
+.art-b{background:var(--b);color:var(--paper)}
+.art-c{background:var(--c);color:#f3ece0}
+.art-d{background:var(--d)}
+.project:hover .art{transform:scale(.98)}
+.body{padding-top:20px}
+.feature .body{padding-top:0;align-self:end}
+.tags{color:var(--accent);margin-bottom:8px}
+.project h2{font-family:Fraunces,serif;font-weight:600;font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.05;letter-spacing:-.02em;margin-bottom:12px}
+.feature h2{font-size:clamp(2.4rem,5vw,4.2rem)}
+.project p:not(.tags){color:var(--muted);max-width:48ch}
+.link{display:inline-block;margin-top:16px;text-decoration:none;border-bottom:1px solid var(--accent)}
+.link:hover{color:var(--accent)}
+
+.about{padding-block:clamp(64px,10vw,140px)}
+.pull{font-family:Fraunces,serif;font-weight:400;font-size:clamp(2.4rem,7vw,6rem);line-height:1;letter-spacing:-.03em;margin-bottom:48px}
+.pull em{color:var(--accent)}
+.cols{columns:2 320px;column-gap:48px}
+.cols p{margin-bottom:1em}
+.drop{float:left;font-family:Fraunces,serif;font-weight:800;font-size:4.2rem;line-height:.8;padding:6px 10px 0 0;color:var(--accent)}
+
+footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding-block:24px 40px;border-top:2px solid var(--ink);color:var(--muted)}
+
+@media (max-width:760px){
+  .work{grid-template-columns:1fr}
+  .project:nth-child(even){padding-left:0;border-left:0}
+  .project:nth-child(odd):not(.feature){padding-right:0}
+  .feature{grid-template-columns:1fr}
+  .feature .body{padding-top:20px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
