@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://holyjerod.github.io/claudy2.0/sitemap.xml
