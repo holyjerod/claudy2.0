@@ -2,7 +2,7 @@
   "name": "claudy2.0",
   "private": true,
   "version": "1.0.0",
-  "description": "Joshua's portfolio. The site prints itself, layer by layer.",
+  "description": "Enginerd: a platform for my products. The site prints itself, layer by layer.",
   "type": "module",
   "scripts": {
     "pages": "node scripts/pages.mjs",

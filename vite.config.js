@@ -3,9 +3,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 // Every generated page is a build input (run `npm run pages` first; npm run dev/build do it for you).
-const pages = ['index.html', '404.html', 'about/index.html', 'journey/index.html', 'making/index.html', 'projects/index.html'];
-for (const d of fs.existsSync('projects') ? fs.readdirSync('projects') : []) {
-  const f = path.join('projects', d, 'index.html');
+const pages = ['index.html', '404.html', 'making/index.html', 'products/index.html'];
+for (const d of fs.existsSync('products') ? fs.readdirSync('products') : []) {
+  const f = path.join('products', d, 'index.html');
   if (fs.existsSync(f)) pages.push(f);
 }
 

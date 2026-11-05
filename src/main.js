@@ -45,7 +45,7 @@ function reveals() {
       type: 'lines', mask: 'lines', autoSplit: true, linesClass: 'split-line',
       onSplit(self) {
         return gsap.from(self.lines, {
-          yPercent: 105, duration: 1.0, ease: 'expo.out', stagger: 0.06,
+          yPercent: 140, duration: 1.0, ease: 'expo.out', stagger: 0.06,
           scrollTrigger: { trigger: el, start: 'top 90%', once: true },
         });
       },
@@ -115,7 +115,7 @@ document.addEventListener('click', (e) => {
 });
 window.addEventListener('pageshow', (e) => { if (e.persisted) { gsap.set(layers, { scaleY: 0 }); gsap.set(curtain, { visibility: 'hidden' }); } });
 
-// "#" links are placeholders until Joshua adds the public URLs
+// "#" links are placeholders until the public URLs are added
 const status = document.createElement('p');
 status.className = 'sr-only'; status.setAttribute('aria-live', 'polite');
 document.body.append(status);
@@ -148,8 +148,8 @@ async function boot() {
   } else {
     intro();
   }
-  if (page === 'projects') {
-    const { initFilters } = await import('./pages/projects.js');
+  if (page === 'products') {
+    const { initFilters } = await import('./pages/products.js');
     initFilters();
   }
   reveals();

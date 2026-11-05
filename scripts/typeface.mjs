@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import opentype from 'opentype.js';
 
-const [file, chars = 'Joshua', out = 'src/hero/gloock-joshua.json'] = process.argv.slice(2);
+const [file, chars = 'Enginerd', out = 'src/hero/gloock-hero.json'] = process.argv.slice(2);
 if (!file) { console.error('usage: node scripts/typeface.mjs <font.ttf> <chars> <out.json>'); process.exit(1); }
 const font = opentype.parse(fs.readFileSync(file).buffer);
 const r = (n) => Math.round(n);

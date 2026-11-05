@@ -71,7 +71,9 @@ export async function initHome({ motion }) {
   try {
     const { createPrint } = await import('../hero/print.js');
     to(64, 'Homing the axes');
-    print = createPrint(host, { layers: L, onLayer: (l, done) => readout(l, L, done) });
+    // the rows come from the static name, so the 3D print always spells what the page says
+    const split = [...hero.querySelectorAll('.hero__row')].map((r) => r.textContent.trim()).filter(Boolean);
+    print = createPrint(host, { layers: L, split, onLayer: (l, done) => readout(l, L, done) });
     print.setProgress(0);
     print.render();
     to(100, 'Printing');

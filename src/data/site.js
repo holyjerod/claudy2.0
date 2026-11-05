@@ -1,28 +1,23 @@
-// All site copy lives here. Every claim comes from PRODUCT.md or from Joshua.
+// All site copy lives here. Every claim comes from PRODUCT.md or from the owner (Enginerd).
 // { todo: '…' } renders as a visible "To fill in" marker. { draft: '…' } renders with a "Draft" marker.
 // Edit this file, then run `npm run dev` or `npm run build`.
+// Adding a product: see "Add a product" in README.md.
 
 // SITE_BASE=/ builds a copy served from the root (used for local QA). GitHub Pages uses /claudy2.0/.
 export const BASE = (typeof process !== 'undefined' && process.env.SITE_BASE) || '/claudy2.0/';
 export const SITE = {
   url: (typeof process !== 'undefined' && process.env.SITE_URL) || 'https://holyjerod.github.io/claudy2.0/',
-  name: 'Joshua',
-  role: 'Computer Engineering student at Singapore Polytechnic',
-  description:
-    'Joshua is a Computer Engineering student at Singapore Polytechnic. Web tools, maps, design boards and 3D prints, made between September and November 2026.',
+  name: 'Enginerd',
+  description: 'Products by Enginerd: web tools and maps, design boards, build briefs and 3D-printed models.',
   layers: 120,
 };
 
 export const NAV = [
-  { href: 'projects/', label: 'Projects', page: 'projects' },
-  { href: 'journey/', label: 'Journey', page: 'journey' },
+  { href: 'products/', label: 'Products', page: 'products' },
   { href: 'making/', label: 'Making', page: 'making' },
-  { href: 'about/', label: 'About', page: 'about' },
 ];
 
-export const CONTACT = { todo: 'Add the contact links you want public, or delete this line.' };
-
-// Featured projects: one full page each. Live links stay '#' until Joshua fills them in.
+// Featured products: one full page each. Live links stay '#' until the public links are ready.
 export const FEATURED = [
   {
     slug: 'sg-linkies',
@@ -102,14 +97,14 @@ export const FEATURED = [
   },
 ];
 
-// Everything else on the Projects page. `page` points to where the item lives.
+// Everything else on the Products page. `page` points to where the item lives.
 export const GROUPS = [
   { id: 'all', label: 'All' },
   { id: 'web', label: 'Web apps' },
   { id: 'design', label: 'Design' },
   { id: 'plans', label: 'Plans' },
   { id: 'prints', label: '3D prints' },
-  { id: 'before', label: 'Before AI' },
+  { id: 'school', label: 'School projects' },
 ];
 
 export const OTHER = [
@@ -126,46 +121,14 @@ export const OTHER = [
   { id: 'briefs', group: 'plans', name: 'Build briefs and plans', line: 'I write the spec before I build.', page: 'making/#plans' },
   { id: 'tunnel', group: 'prints', name: 'Cable-tunnel hinge', line: 'A tunnel model that opens on an M3 screw hinge.', thumb: 'tunnel-open', page: 'making/#prints', alt: 'Render of a cable-tunnel model opened on its hinge, showing walkways and cable trays inside.' },
   { id: 'solar-farm', group: 'prints', name: 'Solar farm', line: 'A 1:417 model on a 0.5 mm base.', thumb: 'solar-farm', page: 'making/#prints', alt: 'Render of a solar farm model: rows of panel tables, a road, a substation and a fence.' },
-  { id: 'campusmart', group: 'before', name: 'CampusMart', line: 'Flutter.', page: 'making/#before' },
-  { id: 'fruit-cnn', group: 'before', name: 'Fruit-scanner CNN', line: 'A CNN that scans fruit.', page: 'making/#before' },
-  { id: 'lift', group: 'before', name: 'Raspberry Pi lift controller', line: 'A lift controller on a Raspberry Pi.', page: 'making/#before' },
-  { id: 'flood', group: 'before', name: 'STM32 flood system', line: 'A flood system on an STM32.', page: 'making/#before' },
+  { id: 'campusmart', group: 'school', name: 'CampusMart', line: 'A Flutter app.', page: 'making/#school' },
+  { id: 'fruit-cnn', group: 'school', name: 'Fruit-scanner CNN', line: 'A CNN that scans fruit.', page: 'making/#school' },
+  { id: 'lift', group: 'school', name: 'Raspberry Pi lift controller', line: 'A lift controller on a Raspberry Pi.', page: 'making/#school' },
+  { id: 'flood', group: 'school', name: 'STM32 flood system', line: 'A flood system on an STM32.', page: 'making/#school' },
 ];
 
-// Journey: September to November 2026. Drafts come from the dates on Joshua's own artifacts.
-export const JOURNEY = [
-  {
-    id: 'sep', month: 'September', layers: [1, 30],
-    todo: 'Give three or four milestones for September.',
-    items: [
-      { draft: 'My first AI-assisted build, a map tool for my internship. Its data stays private.' },
-      { draft: 'Wrote down how I built it, step by step.' },
-      { draft: 'Singapore Gov Tree, first version.' },
-      { draft: 'Planned SG Linkies and made a reusable directory template.' },
-    ],
-  },
-  {
-    id: 'oct', month: 'October', layers: [31, 80],
-    todo: 'Give three or four milestones for October.',
-    items: [
-      { draft: 'JB Bus Stops, then my first written build briefs.' },
-      { draft: 'Design systems: Sumi Current, JB Mural, Hawker Finder signboard and porcelain, Ringgit boards.' },
-      { draft: 'Shipped Hawker Finder, JB Bus Map and SP Student Guide.' },
-    ],
-  },
-  {
-    id: 'nov', month: 'November', layers: [81, 120],
-    todo: 'Give three or four milestones for November.',
-    items: [
-      { draft: 'Gov Tree version two, Bored Go Where, Events SG and a new SG Linkies.' },
-      { draft: '3D-printed a cable-tunnel model and a solar farm.' },
-      { draft: 'This site.' },
-    ],
-  },
-];
-
-// Chapter 0: school projects before AI. Lines are drafts from Joshua's own notes.
-export const CHAPTER0 = [
+// School projects. The lines are drafts from the owner's own notes, to confirm or rewrite.
+export const SCHOOL = [
   { name: 'CampusMart', tag: 'Flutter', line: { draft: 'A marketplace app for students to buy and sell.' } },
   { name: 'Fruit-scanner CNN', tag: 'CNN', line: { draft: 'A self-checkout model that sorts banana, kiwi, mango or unknown.' } },
   { name: 'Raspberry Pi lift controller', tag: 'Raspberry Pi', line: { draft: 'A 10-floor lift prototype written in C.' } },

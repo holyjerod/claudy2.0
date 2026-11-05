@@ -1,9 +1,9 @@
 # DESIGN.md · Layer by layer
 
 ## Brief
-- **Subject:** Joshua, a Computer Engineering student at Singapore Polytechnic who builds web tools, maps and 3D prints.
-- **Audience:** recruiters, lecturers and admissions readers (an assumption, flagged in PRODUCT.md).
-- **Job:** show the projects, how he works, and how much he grew between September and November 2026.
+- **Subject:** Enginerd, who builds web tools, maps and 3D prints. The owner's real name never appears.
+- **Audience:** people who might use the products, plus recruiters and lecturers (an assumption, flagged in PRODUCT.md).
+- **Job:** a platform for the products: each one gets a page with what it is, why it was built, screenshots and a link. No bio, no personal journey, no contact details.
 - **Language:** English.
 - **Constraints:**
   - Vite with vanilla JS. Three.js for the hero, GSAP for scroll.
@@ -16,19 +16,22 @@
 | | A. Layer by layer (process + material) | B. Live wire (formal system) | C. Signal (material) |
 |---|---|---|---|
 | Idea | The site 3D-prints itself: outline first, then infill | One current runs hero to footer and powers each project | Growth as an oscilloscope trace that gains detail |
-| Anchor | He 3D-prints, and he writes the spec before he builds | Computer Engineering, power-grid projects | Computer Engineering lab gear |
+| Anchor | The maker 3D-prints and writes the spec before building | Computer Engineering, power-grid projects | Computer Engineering lab gear |
 | Scores (orig/fit/build/port) | 4 / 4 / 3 / 2 | 3 / 4 / 4 / 4 | 3 / 3 / 4 / 4 |
 
-**Picked A (by Joshua).** It is the only one built on something he actually does: he prints, and he specs before building. A slicer does the same thing, walls before infill.
+**Picked A (by the owner).** It is the only one built on something the maker actually does: printing, and writing the spec before building. A slicer does the same thing, walls before infill.
+
+**Rebrand (5 Nov 2026):** the name became Enginerd, and the site changed from a growth portfolio into a platform for products. The Journey page, the growth timeline, About and contact were removed.
 
 ## Concept card
 ```
-Idea:        The portfolio prints itself: every page is laid down layer by layer, outline first, then infill.
+Idea:        The site prints itself: every page is laid down layer by layer, outline first, then infill.
 Metaphor:    an FDM 3D printer and its slicer (build plate, layers, perimeters, infill, nozzle, layer counter)
-Signature:   the hero prints "Joshua" in 3D; scroll finishes the print (Three.js clip height + perimeter line + infill cap)
+Signature:   the hero prints "Enginerd" in 3D on a base bar, like a name sign; scroll finishes the print
+             (Three.js clip height + perimeter path + infill). Tall screens print two rows, "Engi" behind "nerd".
 Emotion:     a machine quietly making something, right now, in a dark room
 Motion verb: lay down (bottom up, in thin stepped layers; outlines draw before fills)
-Screenshot:  the name half-printed, a hot orange top layer, the readout "LAYER 112 / 240"
+Screenshot:  the name half-printed, a hot orange top layer, the readout "LAYER 066 / 120"
 ```
 
 ## Palette (named after the printer)
@@ -61,7 +64,7 @@ Fluid scale:
 - **Columns:** 12 at 1024 px and up, 6 on tablet, 4 on phone.
 - **Spacing:** margin `clamp(20px, 3.5vw, 64px)`, gutter `clamp(12px, 1.6vw, 24px)`.
 - **Alignment rule:** everything starts on a column line. Display type hangs 0.06em into the margin, an optical indent.
-- **Rhythm:** tall, short, tall. The hero is 190svh (90svh of print), the intro is short, the work list is tall, the timeline is medium, and the footer is a full screen.
+- **Rhythm:** tall, short, tall. The hero is 190svh (90svh of print), the intro is short, the product list is tall, the making teaser is medium, and the footer is a full screen.
 
 ## Shape
 - **Radius 0** everywhere: a print has crisp perimeters.
@@ -80,47 +83,47 @@ Fluid scale:
   - Arriving: the layers lift away.
   - At most 0.7 s each way.
 - **Idle:** the nozzle keeps tracing the current layer's perimeter and the hot edge breathes. All on the GSAP ticker, paused off screen.
-- **Reduced motion:** no GL, no smooth scroll, no scrub, no loader. The hero shows the name as a finished print, using a CSS layer-line texture.
+- **Reduced motion:** no GL, no smooth scroll, no scrub, no loader. The hero shows the name as a finished print, using a CSS layer-line texture (stacked in two rows on tall screens, like the 3D version).
 
 ## Composition plan (home)
 ```
 1 HERO (four-corner frame, full-bleed GL)        2 INTRO (statement + margin note)
 ┌───────────────────────────────────────────┐    ┌───────────────────────────────────────────┐
-│ Joshua                     Work Journey …  │    │ ████████████████████████████    spec ──┐  │
+│ Enginerd                  Products Making │    │ ████████████████████████████    spec ──┐  │
 │                                           │    │ big serif statement, 8 cols     note    │  │
-│      ▓▓ J o s h u a ▓▓  (3D, printing)     │    │ ████████████████████            mono    │  │
-│      ━━━━━━━━━━━━━━━━━━●  hot layer         │    │                                ────────┘  │
-│ intro line (2 lines)        LAYER 112/240 │    └───────────────────────────────────────────┘
+│     ▓▓ E n g i n e r d ▓▓ (3D, printing)   │    │ ████████████████████            mono    │  │
+│     ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ base bar ●       │    │                                ────────┘  │
+│ intro line (2 lines)        LAYER 066/120 │    └───────────────────────────────────────────┘
 └───────────────────────────────────────────┘
-3 WORK (index list + sticky preview)             4 JOURNEY (cross-section: stacked layer bands)
+   phone: two rows, "Engi" behind "nerd"
+3 FEATURED PRODUCTS (index list + sticky preview) 4 MAKING (asymmetric image + caption)
 ┌───────────────────────────────────────────┐    ┌───────────────────────────────────────────┐
-│ SG Linkies ........................ ↗ │▓▓▓│    │ NOV ██████████████████████  milestones    │
-│ Singapore Gov Tree ................ ↗ │▓▓▓│    │ OCT ███████████████         milestones    │
-│ Hawker Finder ..................... ↗ │▓▓▓│    │ SEP ████████                milestones    │
-│ … 7 rows; preview prints in layers    │   │    │ (bottom = first layer, read upward)        │
-└───────────────────────────────────────────┘    └───────────────────────────────────────────┘
-5 MAKING (asymmetric image + caption)            6 FOOTER (final print, full screen)
-┌───────────────────────────────────────────┐    ┌───────────────────────────────────────────┐
-│ ┌──────────────┐   Things you can hold     │    │ PRINT COMPLETE · 240/240                  │
-│ │ 3D render    │   text, 4 cols            │    │ J O S H U A  (mega serif, full width)     │
-│ └──────────────┘   link to Making          │    │ contact [TODO]          nav · back to top │
-└───────────────────────────────────────────┘    └───────────────────────────────────────────┘
+│ SG Linkies ........................ ↗ │▓▓▓│    │ ┌──────────────┐   Things you can hold     │
+│ Singapore Gov Tree ................ ↗ │▓▓▓│    │ │ 3D render    │   text, 4 cols            │
+│ Hawker Finder ..................... ↗ │▓▓▓│    │ └──────────────┘   link to Making          │
+│ … 7 rows; preview prints in layers    │   │    └───────────────────────────────────────────┘
+└───────────────────────────────────────────┘
+5 FOOTER (final print, full screen)
+┌───────────────────────────────────────────┐
+│ PRINT COMPLETE · 120/120                  │
+│ E N G I N E R D  (mega serif, full width) │
+│ nav                         back to top   │
+└───────────────────────────────────────────┘
 ```
 
 ## Inner pages
-- **Projects:** filter bar (All, Web apps, Design, Plans, 3D prints, Before AI) over a mixed index. Rows with thumbnails print in.
-- **Project page:**
-  - Mega title, then a meta strip (group, live-link status).
+- **Products:** filter bar (All, Web apps, Design, Plans, 3D prints, School projects) over a mixed index. One title size; rows with an image show a thumbnail, rows without one stay text only.
+- **Product page:**
+  - Mega title, then a meta strip (breadcrumb, kind).
   - "What it is" and "Why I built it" in two columns.
-  - A full-bleed screenshot printing in, then the link.
-  - The next project as a large link.
-- **Journey:** three month chapters as stacked bands. The thickest is at the top (November), and you read from the first layer up. Milestones are listed.
-- **Chapter 0 and Making:**
-  - Spec-sheet rows for the school projects.
-  - A board wall for the design work.
-  - A brief excerpt.
+  - A full-bleed screenshot printing in, then the link (or "Live link coming soon").
+  - The next product as a large link.
+- **Making:**
   - The 3D prints, each with its render.
-- **About:** a short personal statement, then how I work.
+  - A board wall for the design work, with title-only boards in a compact list.
+  - Energy Learning Journey screenshots, no link.
+  - A brief excerpt.
+  - Spec-sheet rows for the school projects.
 - **404:** "This page came out as spaghetti", a failed-print joke, with a way home.
 
 ## Genericness test
@@ -129,6 +132,5 @@ Fluid scale:
   - The hero is a working print simulation tied to scroll.
   - Work is an index list, not cards.
   - Reveals are stepped layers, not fades.
-  - The timeline is a print cross-section.
   - The 404 is a failed print.
   - Mono is used only where a printer would show a readout.

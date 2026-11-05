@@ -1,4 +1,4 @@
-// Print-queue filter: buttons with aria-pressed, the count is announced politely.
+// Print-queue filter on the Products page: buttons with aria-pressed, the count is announced politely.
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -21,7 +21,7 @@ export function initFilters() {
       li.hidden = !on;
       if (on) shown.push(li);
     });
-    const noun = { one: 'project', other: 'projects' }[plural.select(shown.length)] || 'projects';
+    const noun = { one: 'product', other: 'products' }[plural.select(shown.length)] || 'products';
     status.textContent = `Showing ${shown.length} ${noun}${g === 'all' ? '' : ' in ' + btn.firstChild.textContent.trim()}.`;
     if (motion) gsap.fromTo(shown, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.5, ease: 'steps(6)', stagger: 0.03 });
     ScrollTrigger.refresh();
