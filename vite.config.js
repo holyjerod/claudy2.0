@@ -10,9 +10,9 @@ for (const d of fs.existsSync('projects') ? fs.readdirSync('projects') : []) {
 }
 
 export default defineConfig({
-  base: '/claudy2.0/',
+  base: process.env.SITE_BASE || '/claudy2.0/',
   build: {
-    outDir: 'dist',
+    outDir: process.env.SITE_BASE ? 'dist-qa' : 'dist',
     assetsInlineLimit: 0,
     rollupOptions: { input: Object.fromEntries(pages.map((p) => [p.replace(/\/?index\.html$|\.html$/, '') || 'index', path.resolve(p)])) },
   },

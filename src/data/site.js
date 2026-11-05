@@ -2,9 +2,10 @@
 // { todo: '…' } renders as a visible "To fill in" marker. { draft: '…' } renders with a "Draft" marker.
 // Edit this file, then run `npm run dev` or `npm run build`.
 
-export const BASE = '/claudy2.0/';
+// SITE_BASE=/ builds a copy served from the root (used for local QA). GitHub Pages uses /claudy2.0/.
+export const BASE = (typeof process !== 'undefined' && process.env.SITE_BASE) || '/claudy2.0/';
 export const SITE = {
-  url: 'https://holyjerod.github.io/claudy2.0/',
+  url: (typeof process !== 'undefined' && process.env.SITE_URL) || 'https://holyjerod.github.io/claudy2.0/',
   name: 'Joshua',
   role: 'Computer Engineering student at Singapore Polytechnic',
   description:
@@ -13,7 +14,7 @@ export const SITE = {
 };
 
 export const NAV = [
-  { href: 'projects/', label: 'Work', page: 'projects' },
+  { href: 'projects/', label: 'Projects', page: 'projects' },
   { href: 'journey/', label: 'Journey', page: 'journey' },
   { href: 'making/', label: 'Making', page: 'making' },
   { href: 'about/', label: 'About', page: 'about' },
@@ -25,6 +26,7 @@ export const CONTACT = { todo: 'Add the contact links you want public, or delete
 export const FEATURED = [
   {
     slug: 'sg-linkies',
+    kind: 'Link hub',
     name: 'SG Linkies',
     what: 'A link hub of every link I use in Singapore. It has 8 tabs, search, pins, a Marina Bay Sands night photo in the background with moving water, and a Skills tab for GitHub skill repos.',
     short: 'Every link I use in Singapore, in 8 tabs with search and pins.',
@@ -34,6 +36,7 @@ export const FEATURED = [
   },
   {
     slug: 'singapore-gov-tree',
+    kind: 'Explorer',
     name: 'Singapore Gov Tree',
     what: 'An explorer of how Singapore government bodies and agencies connect.',
     short: 'How Singapore government bodies and agencies connect.',
@@ -46,6 +49,7 @@ export const FEATURED = [
   },
   {
     slug: 'hawker-finder',
+    kind: 'Map',
     name: 'Hawker Finder',
     what: 'A map for finding hawker centres, in a signboard and porcelain style.',
     short: 'A map for finding hawker centres.',
@@ -55,6 +59,7 @@ export const FEATURED = [
   },
   {
     slug: 'jb-bus-map',
+    kind: 'Map',
     name: 'JB Bus Map',
     what: 'A map of bus routes and stops in Johor Bahru, plus a JB Bus Stops view.',
     short: 'Bus routes and stops in Johor Bahru.',
@@ -67,6 +72,7 @@ export const FEATURED = [
   },
   {
     slug: 'events-sg',
+    kind: 'Guide',
     name: 'Events SG',
     what: 'Where to find events around Singapore.',
     short: 'Where to find events around Singapore.',
@@ -76,6 +82,7 @@ export const FEATURED = [
   },
   {
     slug: 'bored-go-where',
+    kind: 'Guide',
     name: 'Bored Go Where',
     what: 'Free or cheap places to explore in Singapore that are not tourist traps.',
     short: 'Free or cheap places in Singapore that are not tourist traps.',
@@ -85,6 +92,7 @@ export const FEATURED = [
   },
   {
     slug: 'sp-student-guide',
+    kind: 'Guide',
     name: 'SP Student Guide',
     what: 'A search-first guide to Singapore Polytechnic for new students.',
     short: 'A search-first guide to Singapore Polytechnic for new students.',

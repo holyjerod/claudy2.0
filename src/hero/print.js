@@ -82,8 +82,12 @@ function glowTexture() {
 }
 
 export function createPrint(host, { layers = 120, onLayer } = {}) {
-  const renderer = new WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  const touch = matchMedia('(pointer: coarse)').matches;
+  const renderer = new WebGLRenderer({ antialias: !touch, powerPreference: 'high-performance' });
+  // adaptive resolution: start near the device ratio, step down when frames run slow, back up when there is room
+  const maxDpr = Math.min(window.devicePixelRatio || 1, touch ? 1.5 : 1.75);
+  let dpr = maxDpr, slow = 0, quick = 0, ema = 16;
+  renderer.setPixelRatio(dpr);
   renderer.outputColorSpace = SRGBColorSpace;
   renderer.setClearColor(new Color('#0d0c0b'), 1);
   host.append(renderer.domElement);
@@ -94,7 +98,7 @@ export function createPrint(host, { layers = 120, onLayer } = {}) {
   // ---- the part
   const font = new FontLoader().parse(fontData);
   const DEPTH = 0.34;
-  const geo = new TextGeometry('Joshua', { font, size: 1, depth: DEPTH, curveSegments: 12, bevelEnabled: false });
+  const geo = new TextGeometry('Joshua', { font, size: 1, depth: DEPTH, curveSegments: touch ? 7 : 11, bevelEnabled: false });
   geo.computeBoundingBox();
   const bb = geo.boundingBox;
   const W = bb.max.x - bb.min.x, H = bb.max.y - bb.min.y;
@@ -189,8 +193,17 @@ export function createPrint(host, { layers = 120, onLayer } = {}) {
   frame();
   const ro = new ResizeObserver(frame); ro.observe(host);
 
+  function adapt(dt) {
+    if (!dt) return;
+    ema += (dt * 1000 - ema) * 0.1;
+    if (ema > 22) { slow++; quick = 0; } else if (ema < 12) { quick++; slow = 0; } else { slow = quick = 0; }
+    if (slow > 20 && dpr > 0.5) { dpr = Math.max(0.5, dpr * 0.8); renderer.setPixelRatio(dpr); frame(); slow = 0; }
+    if (quick > 120 && dpr < maxDpr) { dpr = Math.min(maxDpr, dpr * 1.15); renderer.setPixelRatio(dpr); frame(); quick = 0; }
+  }
+
   function tick(time, dt) {
     st.t = time;
+    adapt(dt);
     // the nozzle traces the current layer, perimeter first; when the print is done it parks
     const live = uniforms.uDone.value < 1;
     if (!st.done && st.path) {

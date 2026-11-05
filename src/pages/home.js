@@ -50,8 +50,10 @@ export async function initHome({ motion }) {
   if (!motion || !canGL || !hero || !host || navigator.connection?.saveData) { readout(L, L, true); return; }
 
   // ---- loader: first visit in this tab only, shows real progress, never longer than 2.4 s
-  let first = true;
-  try { first = !sessionStorage.getItem('printed'); } catch (e) {}
+  // The loader only runs on a first desktop visit. On touch screens the static name and text show at
+  // once (fast LCP) and the print fades in when the GL module is ready.
+  let first = matchMedia('(pointer: fine)').matches;
+  try { first = first && !sessionStorage.getItem('printed'); } catch (e) {}
   const loader = document.getElementById('loader');
   const count = loader?.querySelector('[data-loader-count]');
   const bar = loader?.querySelector('[data-loader-bar]');
@@ -77,6 +79,7 @@ export async function initHome({ motion }) {
     console.warn('print hero unavailable', err);
     html.classList.remove('loading'); readout(L, L, true); return;
   }
+  gsap.fromTo(host, { opacity: 0 }, { opacity: 1, duration: first ? 0.01 : 0.6, ease: 'expo.out' });
   html.classList.add('gl-on');
   ScrollTrigger.refresh();
 
@@ -89,8 +92,24 @@ export async function initHome({ motion }) {
   await exit();
   try { sessionStorage.setItem('printed', '1'); } catch (e) {}
 
+  // ---- pause control (WCAG 2.2.2): stops the nozzle, the glow and the idle drift. Scrolling still prints.
+  const pauseBtn = document.querySelector('[data-pause]');
+  const pauseLabel = pauseBtn?.querySelector('[data-pause-label]');
+  let paused = false;
+  try { paused = localStorage.getItem('print-paused') === '1'; } catch (e) {}
+  const setPaused = (v) => {
+    paused = v;
+    pauseBtn?.setAttribute('aria-pressed', String(v));
+    if (pauseLabel) pauseLabel.textContent = v ? 'Resume the print' : 'Pause the print';
+    html.classList.toggle('print-paused', v);
+    try { localStorage.setItem('print-paused', v ? '1' : '0'); } catch (e) {}
+  };
+  setPaused(paused);
+  pauseBtn?.addEventListener('click', () => setPaused(!paused));
+
   // ---- intro prints the first 55%, scroll finishes it
-  gsap.to(state, { intro: 0.55, duration: first ? 2.0 : 1.2, ease: 'power1.inOut' });
+  if (paused) state.intro = 0.55;
+  else gsap.to(state, { intro: 0.55, duration: first ? 2.0 : 1.2, ease: 'power1.inOut' });
   ScrollTrigger.create({
     trigger: hero, start: 'top top', end: 'bottom bottom', scrub: true,
     onUpdate: (s) => { state.scroll = s.progress; },
@@ -101,15 +120,21 @@ export async function initHome({ motion }) {
     print.setPointer((e.clientX / innerWidth) * 2 - 1, (e.clientY / innerHeight) * 2 - 1);
   }, { passive: true });
 
-  let doneAt = 0;
+  let doneAt = 0, clock = 0, lastF = -1, lastScroll = -1, lastSize = '';
   gsap.ticker.add((time, deltaMs) => {
     if (!state.visible || document.hidden) return;
     const f = Math.min(1, state.intro + (1 - state.intro) * state.scroll);
+    const size = innerWidth + 'x' + innerHeight;
+    // paused and nothing changed: skip the frame entirely
+    if (paused && f === lastF && state.scroll === lastScroll && size === lastSize) return;
+    lastF = f; lastScroll = state.scroll; lastSize = size;
+    const dt = paused ? 0 : Math.min(deltaMs, 50) / 1000;
+    clock += dt;
     print.setProgress(f);
     print.setScroll(state.scroll);
     // the finished print cools down over a second
     const u = print.uniforms.uDone;
-    if (f >= 1) { doneAt ||= time; u.value = Math.min(1, (time - doneAt) / 1.2); } else { doneAt = 0; u.value = 0; }
-    print.tick(time, Math.min(deltaMs, 50) / 1000);
+    if (f >= 1) { doneAt ||= clock; u.value = paused ? 1 : Math.min(1, (clock - doneAt) / 1.2); } else { doneAt = 0; u.value = 0; }
+    print.tick(clock, dt);
   });
 }

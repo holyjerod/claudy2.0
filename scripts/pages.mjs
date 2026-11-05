@@ -19,9 +19,10 @@ function rich(v) {
 }
 const plain = (v) => (typeof v === 'string' ? v : v?.todo || v?.draft || '');
 
-function img(src, alt, { w = 1440, h = 900, sizes = '(min-width: 1024px) 66vw, 100vw', lazy = true, thumb = 720, cls = '' } = {}) {
+function img(src, alt, { w = 1440, h = 900, sizes = '(min-width: 1024px) 66vw, 100vw', lazy = true, thumb = 720, cls = '', small = false } = {}) {
   const set = thumb ? `srcset="${BASE}img/${src}-${thumb}.webp ${thumb}w, ${BASE}img/${src}.webp ${w}w" sizes="${sizes}"` : '';
-  return `<img class="${cls}" src="${BASE}img/${src}.webp" ${set} width="${w}" height="${h}" alt="${esc(alt)}" ${lazy ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async">`;
+  const file = small && thumb ? `${src}-${thumb}` : src;   // small: the fallback src is the thumbnail
+  return `<img class="${cls}" src="${BASE}img/${file}.webp" ${set} width="${w}" height="${h}" alt="${esc(alt)}" ${lazy ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async">`;
 }
 
 function head({ title, description, pathName, page, jsonld }) {
@@ -113,16 +114,16 @@ ${footer()}
 const workRows = FEATURED.map((p, i) => `
     <li class="work__item">
       <a class="work-row" href="${BASE}projects/${p.slug}/" data-preview="${p.shots[0].src}">
-        <span class="work-row__layer readout" aria-hidden="true">L${pad3(Math.round(((i + 1) / FEATURED.length) * L))}</span>
         <span class="work-row__name">${esc(p.name)}</span>
         <span class="work-row__line">${esc(p.short)}</span>
+        <span class="work-row__layer readout">${esc(p.kind)}</span>
         <span class="work-row__go" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-        ${img(p.shots[0].src, '', { cls: 'work-row__thumb', sizes: '100vw' })}
+        ${img(p.shots[0].src, '', { cls: 'work-row__thumb', sizes: '100vw', small: true })}
       </a>
     </li>`).join('');
 
 function journeyBands(heading = 'h3') {
-  return JOURNEY.map((m) => `
+  return [...JOURNEY].reverse().map((m) => `
     <li class="band band--${m.id}" data-reveal="layers">
       <div class="band__head">
         <p class="readout band__layers">Layers ${m.layers[0]} to ${m.layers[1]}</p>
@@ -151,10 +152,11 @@ written.push(page({
     <div id="gl" class="hero__gl" aria-hidden="true"></div>
     <div class="hero__plate" aria-hidden="true"></div>
     <h1 class="hero__name" id="hero-title" data-hero-name><span class="hero__name-text">Joshua</span></h1>
-    <p class="hero__intro" data-intro>${esc(SITE.role)}. I build web tools and maps, and I 3D-print things.</p>
-    <div class="hero__readout" data-intro aria-hidden="true">
-      <p class="readout"><span class="lamp" data-lamp></span><span data-layer>Layer ${pad3(L)} / ${L}</span></p>
-      <p class="readout readout--dim" data-status>Print complete</p>
+    <p class="hero__intro">${esc(SITE.role)}. I build web tools and maps, and I 3D-print things.</p>
+    <div class="hero__readout">
+      <p class="readout" aria-hidden="true"><span class="lamp" data-lamp></span><span data-layer>Layer ${pad3(L)} / ${L}</span></p>
+      <p class="readout readout--dim" aria-hidden="true" data-status>Print complete</p>
+      <button class="pause" type="button" data-pause aria-pressed="false"><span class="pause__icon" aria-hidden="true"></span><span data-pause-label>Pause the print</span></button>
     </div>
     <p class="hero__hint" data-hint aria-hidden="true">Keep scrolling to finish the print</p>
   </div>
@@ -202,7 +204,7 @@ written.push(page({
   <div class="making__text">
     <h2 id="making-title" class="section-title" data-split="lines">Things you can hold</h2>
     <p>${esc(PRINTS[0].line)} ${esc(PRINTS[1].line)}</p>
-    <p>The same page has my school projects from before I used AI, my design boards, and the briefs I write before I build.</p>
+    <p>That page also has my school projects from before I used AI, my design boards and my build briefs.</p>
     <p><a class="btn" href="${BASE}making/"><span class="btn__label">Chapter 0 and making</span></a></p>
   </div>
 </section>`,
@@ -233,7 +235,7 @@ written.push(page({
     ${allItems.map((it) => `
     <li class="q-item${it.featured ? ' q-item--featured' : ''}" data-group="${it.group}">
       <a class="q-item__link" href="${BASE}${it.href}">
-        <span class="q-item__media">${it.thumb ? img(it.thumb, it.alt || '', { sizes: '(min-width: 1024px) 22vw, 40vw', w: it.thumb.startsWith('tunnel') || it.thumb.startsWith('solar') ? 1600 : 1440, h: it.thumb.startsWith('tunnel') || it.thumb.startsWith('solar') ? 1000 : 900, thumb: it.thumb.startsWith('tunnel') || it.thumb.startsWith('solar') ? 800 : 720 }) : `<span class="q-item__blank" aria-hidden="true"></span>`}</span>
+        <span class="q-item__media">${it.thumb ? img(it.thumb, it.alt || '', { sizes: '(min-width: 1024px) 18vw, 120px', small: true, w: it.thumb.startsWith('tunnel') || it.thumb.startsWith('solar') ? 1600 : 1440, h: it.thumb.startsWith('tunnel') || it.thumb.startsWith('solar') ? 1000 : 900, thumb: it.thumb.startsWith('tunnel') || it.thumb.startsWith('solar') ? 800 : 720 }) : `<span class="q-item__blank" aria-hidden="true"></span>`}</span>
         <span class="q-item__group readout">${groupLabel[it.group]}</span>
         <span class="q-item__name">${esc(it.name)}</span>
         <span class="q-item__line">${esc(it.line)}</span>
@@ -253,12 +255,12 @@ FEATURED.forEach((p, i) => {
   written.push(page({
     file: `projects/${p.slug}/index.html`, pathName: `projects/${p.slug}/`, pageId: 'project',
     title: `${p.name} · Joshua`,
-    description: `${p.what} A project by Joshua, a Computer Engineering student at Singapore Polytechnic.`,
+    description: `${p.short} A project by Joshua, a Computer Engineering student at Singapore Polytechnic.`,
     jsonld: { '@context': 'https://schema.org', '@type': 'CreativeWork', name: p.name, description: p.what, author: person, url: `${SITE.url}projects/${p.slug}/` },
     body: `
 <article class="case">
   <header class="case__head">
-    <p class="readout case__meta"><a class="crumb" href="${BASE}projects/">Projects</a> <span aria-hidden="true">/</span> Web app ${String(i + 1).padStart(2, '0')} of ${String(FEATURED.length).padStart(2, '0')}</p>
+    <p class="readout case__meta"><a class="crumb" href="${BASE}projects/">Projects</a> <span aria-hidden="true">/</span> ${esc(p.kind)} · ${i + 1} of ${FEATURED.length}</p>
     <h1 class="case__title" data-split="lines">${esc(p.name)}</h1>
   </header>
   <div class="case__cols">
@@ -275,8 +277,10 @@ FEATURED.forEach((p, i) => {
   </div>
   <section class="case__live" aria-labelledby="live">
     <h2 id="live" class="case__h">Try it</h2>
-    <p><a class="btn btn--hot" href="${p.link}" data-placeholder-link><span class="btn__label">Open ${esc(p.name)}</span></a></p>
-    <p class="case__note">${rich({ todo: 'Paste the public link. My artifacts are private for now.' })}</p>
+    ${p.link && p.link !== '#'
+      ? `<p><a class="btn btn--hot" href="${esc(p.link)}"><span class="btn__label">Open ${esc(p.name)}</span></a></p>`
+      : `<p class="soon readout"><span class="lamp" aria-hidden="true"></span>Live link coming soon</p>
+    <p class="case__note">${rich({ todo: 'Paste the public link into src/data/site.js. My artifacts are private for now.' })}</p>`}
   </section>
 </article>
 <nav class="next" aria-label="Next project">
@@ -314,7 +318,7 @@ written.push(page({
 <section class="page-head">
   <p class="readout page-head__readout">Before the first layer</p>
   <h1 class="page-title" data-split="lines">Chapter 0 and making</h1>
-  <p class="page-lead">School projects from before I used AI, the design work behind my apps, the briefs I write before I build, and the models I print.</p>
+  <p class="page-lead">School projects from before I used AI, the design work behind my apps, my build briefs, and the models I print.</p>
 </section>
 
 <section class="mk" id="before" aria-labelledby="before-title">
@@ -338,7 +342,9 @@ written.push(page({
   </div>
   <div class="brief" data-reveal="layers">
     <p class="readout">Example</p>
-    <p class="brief__name"><a class="btn" href="${BRIEFS.example.link}" data-placeholder-link><span class="btn__label">${esc(BRIEFS.example.name)}</span></a></p>
+    <p class="brief__name">${BRIEFS.example.link && BRIEFS.example.link !== '#'
+      ? `<a class="btn" href="${esc(BRIEFS.example.link)}"><span class="btn__label">Read the ${esc(BRIEFS.example.name)}</span></a>`
+      : esc(BRIEFS.example.name)}</p>
     <p>${rich({ todo: BRIEFS.example.todo })}</p>
     <p class="readout brief__others-h">Other briefs and plans</p>
     <ul class="brief__others">${BRIEFS.others.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
@@ -391,7 +397,7 @@ written.push(page({
     </div>
     <div class="about__block" data-reveal="layers">
       <h2 class="case__h">How I work</h2>
-      <p>I write the spec before I build. Then I build the smallest version that works and add to it, one layer at a time.</p>
+      <p>I write the spec before I build. ${rich({ draft: 'Then I build the smallest version that works and add to it, one layer at a time.' })}</p>
     </div>
     <div class="about__block" data-reveal="layers">
       <h2 class="case__h">What I make</h2>
@@ -412,7 +418,7 @@ page({
   <h1 class="lost__title" data-split="lines">This page came out as spaghetti.</h1>
   <p class="page-lead">The print came loose from the bed. The page you wanted isn’t here.</p>
   <div class="lost__spaghetti" aria-hidden="true">${Array.from({ length: 9 }, (_, i) => `<span style="--i:${i}"></span>`).join('')}</div>
-  <p class="lost__links"><a class="btn btn--hot" href="${BASE}"><span class="btn__label">Start a new print</span></a> <a class="btn" href="${BASE}projects/"><span class="btn__label">See the projects</span></a></p>
+  <p class="lost__links"><a class="btn btn--hot" href="${BASE}"><span class="btn__label">Start again from the home page</span></a> <a class="btn" href="${BASE}projects/"><span class="btn__label">See the projects</span></a></p>
 </section>`,
 });
 

@@ -8,6 +8,7 @@ export function initFilters() {
   const status = document.querySelector('[data-filter-status]');
   if (!bar) return;
   const motion = document.documentElement.classList.contains('motion');
+  const plural = new Intl.PluralRules('en-SG');
 
   bar.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-filter]');
@@ -20,7 +21,8 @@ export function initFilters() {
       li.hidden = !on;
       if (on) shown.push(li);
     });
-    status.textContent = `Showing ${shown.length} ${shown.length === 1 ? 'project' : 'projects'}${g === 'all' ? '' : ' in ' + btn.firstChild.textContent.trim()}.`;
+    const noun = { one: 'project', other: 'projects' }[plural.select(shown.length)] || 'projects';
+    status.textContent = `Showing ${shown.length} ${noun}${g === 'all' ? '' : ' in ' + btn.firstChild.textContent.trim()}.`;
     if (motion) gsap.fromTo(shown, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.5, ease: 'steps(6)', stagger: 0.03 });
     ScrollTrigger.refresh();
   });
