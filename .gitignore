@@ -11,3 +11,5 @@ dist
 /projects/
 dist-qa
 .jury
+__pycache__/
+*.pyc
