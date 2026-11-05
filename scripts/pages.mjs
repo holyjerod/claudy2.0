@@ -422,12 +422,13 @@ page({
 </section>`,
 });
 
-// ---------- sitemap + robots ----------
+// ---------- sitemap + robots (production builds only; QA builds must not rewrite tracked files) ----------
 const today = new Date().toISOString().slice(0, 10);
-fs.writeFileSync(path.join(root, 'public/sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+const production = !process.env.SITE_BASE && !process.env.SITE_URL;
+if (production) fs.writeFileSync(path.join(root, 'public/sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${written.map((p) => `  <url><loc>${SITE.url}${p}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
 </urlset>
 `);
-fs.writeFileSync(path.join(root, 'public/robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE.url}sitemap.xml\n`);
+if (production) fs.writeFileSync(path.join(root, 'public/robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE.url}sitemap.xml\n`);
 console.log(`pages: ${written.length + 1} written (incl. 404)`);
