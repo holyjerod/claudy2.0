@@ -71,7 +71,7 @@ function header(page) {
   return `<a class="skip-link" href="#main">Skip to content</a>
 <div id="curtain" aria-hidden="true"></div>
 <header class="frame" data-frame>
-  <a class="brand" href="${BASE}"${page === 'home' ? ' aria-current="page"' : ''}><span class="brand__name">Joshua</span><span class="brand__lamp" aria-hidden="true"></span></a>
+  <a class="brand" href="${BASE}"${page === 'home' ? ' aria-current="page"' : ''}><span class="brand__name roll"><span class="roll__a">Joshua</span><span class="roll__b" aria-hidden="true">Joshua</span></span><span class="brand__lamp" aria-hidden="true"></span></a>
   <nav class="nav" aria-label="Main"><ul class="nav__list">${links}</ul></nav>
 </header>`;
 }

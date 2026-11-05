@@ -497,3 +497,19 @@ html:not(.gl-on) .pause { display: none; }
   .pause { grid-column: 1 / -1; justify-self: start; margin: 4px 0 -10px -12px; }
   .hero__intro { bottom: calc(var(--margin) + 92px); }
 }
+
+/* hover treatments in the motion verb: the name rolls up a layer; small links draw a hot underline in steps */
+@media (hover: hover) {
+  .brand:hover .roll__a, .brand:hover .roll__b { translate: 0 -100%; }
+  .brand:hover .brand__lamp { scale: 1.5; transition: scale 0.3s var(--ease); }
+}
+.brand:focus-visible .roll__a, .brand:focus-visible .roll__b { translate: 0 -100%; }
+.pause [data-pause-label], .crumb {
+  background: linear-gradient(var(--hot), var(--hot)) 0 100% / 0 2px no-repeat;
+  transition: background-size 0.3s steps(6, end), color 0.2s;
+}
+.pause [data-pause-label] { padding-bottom: 3px; }
+@media (hover: hover) {
+  .pause:hover [data-pause-label], .crumb:hover { background-size: 100% 2px; }
+}
+.pause:focus-visible [data-pause-label], .crumb:focus-visible { background-size: 100% 2px; }
