@@ -2,6 +2,7 @@
 
 A static site that holds Enginerd's products, hosted on GitHub Pages at https://holyjerod.github.io/claudy2.0/ (the repo name has no hyphen).
 Read PRODUCT.md for audience, tone, pages and content. DESIGN.md holds the concept and the design system.
+docs/HANDOFF.md lists what has been built, the links and the open items.
 
 ## Identity
 - The maker is "Enginerd". Never use the owner's real name: not in pages, meta, images, code, docs or commits.
